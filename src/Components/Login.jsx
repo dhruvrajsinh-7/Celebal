@@ -1,9 +1,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { login } from "../Utils/authSlice";
+import { toast } from "react-toastify";
+
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const dispatch = useDispatch();
 
   const navigate = useNavigate();
   const handleEmailChange = (e) => {
@@ -21,7 +26,9 @@ const Login = () => {
       setError("Please fill in all fields");
       return;
     }
+    dispatch(login());
 
+    toast.success("Login Successful");
     navigate("/");
   };
 

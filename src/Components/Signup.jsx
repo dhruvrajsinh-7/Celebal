@@ -1,11 +1,17 @@
 import { useState } from "react";
-
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { signup } from "../Utils/authSlice";
+import { useNavigate } from "react-router-dom";
 const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
-
+  const dispatch = useDispatch();
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const navigate = useNavigate();
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
   };
@@ -34,7 +40,15 @@ const Signup = () => {
       setError("Passwords do not match");
       return;
     }
-    alert("Signup Successful");
+
+    dispatch(signup({ email, password }));
+
+    toast.success("Signup Successful");
+
+    setEmail("");
+    setPassword("");
+    setConfirmPassword("");
+    navigate("/");
   };
 
   return (
